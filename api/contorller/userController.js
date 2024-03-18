@@ -4,15 +4,7 @@ import { errorHandler } from "../utils/error.js";
 import jwt  from 'jsonwebtoken';
 
 
-const login = async(req, res , next) => {
-    try{
-        res.json({
-            message: 'Hello world'
-        })
-    }catch(err){
-        next(err)
-    }
-}
+
 const loginPost = async(req, res , next) => {
     const {email , password} = req.body;
     try{
@@ -23,7 +15,7 @@ const loginPost = async(req, res , next) => {
                const token  = jwt.sign({_id : userData._id}, process.env.JWT_SECRET);
                const {password : HashedPassword  , ...others} = userData._doc;
                const expiryDate = new Date(Date.now() + 3600000); 
-               res.cookie('accesstoken' , token , { httpOnly : true , expires : expiryDate }).status(200).json({others})
+               return res.cookie('accesstoken' , token , { httpOnly : true , expires : expiryDate }).status(200).json({others})
             }else{
                 return next(errorHandler(401,'Wrong password'))
             }
@@ -59,7 +51,6 @@ const signupPost = async (req, res , next) => {
     }
 };
 export const user = {
-    login,
     signupPost,
     loginPost
 }
