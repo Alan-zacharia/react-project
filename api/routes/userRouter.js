@@ -4,6 +4,7 @@ import {user} from '../contorller/userController.js'
 
 
 router.get('/',user.login)
+router.post('/login',user.loginPost)
 router.post('/signup',user.signupPost)
 
 
