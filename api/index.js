@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 import {router} from './routes/userRouter.js'
-const PORT = 4000;
+const PORT = process.env.PORT;
 
 const app = express();
 
@@ -14,9 +14,17 @@ mongoose.connect(process.env.MONGODB_URL)
 
 app.use(express.json());
 
-app.use('/' , router)
+app.use('/api/' , router)
 
-
+app.use((err,req,res,next)=>{
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Internal Server error";
+    return res.status(statusCode).json({
+        success:false,
+        error:message,
+        statusCode
+    })
+});
 
 
 app.listen(PORT, () => console.log(`server running ${PORT}`));
