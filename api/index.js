@@ -2,8 +2,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
+import {router} from './routes/userRouter.js'
+const PORT = 4000;
+
 const app = express();
-const PORT = 3000;
 
 // Connect to MongoDB database.
 mongoose.connect(process.env.MONGODB_URL)
@@ -11,6 +13,8 @@ mongoose.connect(process.env.MONGODB_URL)
     .catch((err) => console.error(err));
 
 app.use(express.json());
+
+app.use('/' , router)
 
 
 
